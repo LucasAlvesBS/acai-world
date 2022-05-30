@@ -10,3 +10,5 @@ RUN npm install db-migrate-pg
 COPY . .
 
 RUN git clone https://github.com/vishnubob/wait-for-it.git
+
+CMD ["npm", "run", "start:prod"]
