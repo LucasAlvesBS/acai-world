@@ -33,10 +33,10 @@ services:
       - "3000:3000"
       - 127.0.0.1:9223:9223
     environment:
-      - DB_HOST: ${DB_HOST}
-      - DB_USER: ${DB_USERNAME}
-      - DB_PASSWORD: ${DB_PASSWORD}
-      - DB_NAME: ${DB_NAME}
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
     command: npm run start:dev
 
   migration:
