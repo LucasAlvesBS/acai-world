@@ -17,6 +17,13 @@ import { UsersModule } from './app/users/users.module';
       database: process.env.DB_NAME,
       synchronize: false,
       logging: false,
+      ssl: process.env.NODE_ENV === 'production' ? true : false,
+      extra:
+        process.env.NODE_ENV === 'production'
+          ? {
+              ssl: { rejectUnauthorized: false },
+            }
+          : null,
       entities: [__dirname + '/**/*.entity{.js,.ts}'],
     }),
     UsersModule,
