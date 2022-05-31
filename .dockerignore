@@ -4,3 +4,4 @@ client/node_modules/
 npm-debug.log
 docker-compose*.yml
 dist/
+.gitignore
