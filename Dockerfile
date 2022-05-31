@@ -7,7 +7,7 @@ COPY package*.json ./
 RUN npm install
 RUN npm install db-migrate-pg
 
-COPY . .
+COPY . /app/
 
 RUN git clone https://github.com/vishnubob/wait-for-it.git
 
