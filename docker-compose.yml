@@ -26,9 +26,6 @@ services:
       - .env
     depends_on:
       - database_application
-    volumes:
-      - .:/app
-      - /app/node_modules
     ports:
       - "3000:3000"
       - 127.0.0.1:9223:9223
