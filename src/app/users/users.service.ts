@@ -16,7 +16,7 @@ export class UsersService {
 
   async findAllUsers() {
     return await createQueryBuilder(UsersEntity, 'users')
-      .select(['users.id', 'users.fullName'])
+      .select(['users.id', 'users.fullName', 'users.cpf'])
       .getMany();
   }
 
