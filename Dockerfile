@@ -13,4 +13,4 @@ RUN npm run build
 
 RUN git clone https://github.com/vishnubob/wait-for-it.git
 
-CMD ["npm", "run", "start:prod"]
+CMD ["npm", "run", "start:dev"]
