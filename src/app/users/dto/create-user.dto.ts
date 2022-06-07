@@ -2,9 +2,12 @@ import {
   IsEmail,
   IsNotEmpty,
   IsString,
+  Matches,
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { MessageHelper } from 'src/helpers/message.helper';
+import { RegExHelper } from 'src/helpers/regex.helper';
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -18,11 +21,13 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   @IsString()
+  @Matches(RegExHelper.cpf, { message: MessageHelper.CPF_VALID })
   cpf: string;
 
   @IsNotEmpty()
   @IsString()
   @MinLength(8)
   @MaxLength(30)
+  @Matches(RegExHelper.password, { message: MessageHelper.PASSWORD_VALID })
   password: string;
 }
