@@ -1,11 +1,21 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { hashSync } from 'bcrypt';
 import { MessageHelper } from '../../helpers/message.helper';
-import { createQueryBuilder, FindConditions, Repository } from 'typeorm';
+import {
+  createQueryBuilder,
+  FindConditions,
+  FindOneOptions,
+  Repository,
+} from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersEntity } from './users.entity';
+import { checkDuplicate, checkIfExists } from '../../helpers/function.helper';
 
 @Injectable()
 export class UsersService {
@@ -31,9 +41,21 @@ export class UsersService {
     }
   }
 
+  async checkUser(
+    conditions: FindConditions<UsersEntity>,
+    options?: FindOneOptions<UsersEntity>,
+  ) {
+    try {
+      return await this.userRepository.findOneOrFail(conditions, options);
+    } catch (error) {
+      throw new UnauthorizedException(MessageHelper.UNIDENTIFIED_USER);
+    }
+  }
+
   async createUser(data: CreateUserDto) {
     const { email } = data;
-    await this.userRepository.findOne({ email });
+    const verifyUser = await this.userRepository.findOne({ email });
+    checkDuplicate(verifyUser);
     const user = this.userRepository.create(data);
     user.password = hashSync(user.password, 10);
     const savedUser = await this.userRepository.save(user);
@@ -49,8 +71,10 @@ export class UsersService {
       .select(['users.id', 'users.password'])
       .where(conditions)
       .getOne();
+    checkIfExists(user);
     const { email } = data;
-    await this.userRepository.findOne({ email });
+    const verifyUser = await this.userRepository.findOne({ email });
+    checkDuplicate(verifyUser);
     const oldPassword = user.password;
     this.userRepository.merge(user, data);
     if (oldPassword !== user.password) {
