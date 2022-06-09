@@ -35,6 +35,7 @@ export class UsersService {
       await this.userRepository.findOneOrFail(conditions);
       return await createQueryBuilder(UsersEntity, 'users')
         .select(['users.id', 'users.fullName'])
+        .where(conditions)
         .getOne();
     } catch (error) {
       throw new NotFoundException(MessageHelper.NOT_FOUND);
@@ -61,6 +62,18 @@ export class UsersService {
     const savedUser = await this.userRepository.save(user);
     savedUser.password = undefined;
     return savedUser;
+  }
+
+  async createAdmin(data: CreateUserDto) {
+    const { email } = data;
+    const verifyAdmin = await this.userRepository.findOne({ email });
+    checkDuplicate(verifyAdmin);
+    const admin = this.userRepository.create(data);
+    admin.password = hashSync(admin.password, 10);
+    admin.isAdmin = true;
+    const savedAdmin = await this.userRepository.save(admin);
+    savedAdmin.password = undefined;
+    return savedAdmin;
   }
 
   async updateUser(

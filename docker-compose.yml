@@ -29,7 +29,7 @@ services:
     depends_on:
       - database_application
     ports:
-      - "3000:3000"
+      - "${PORT_DOCKER}:${PORT_DOCKER}"
     environment:
       - DB_HOST=${DB_HOST}
       - DB_USER=${DB_USERNAME}
@@ -40,6 +40,7 @@ services:
   migration:
     build:
       context: .
+    restart: on-failure
     command:
       [
         "./wait-for-it/wait-for-it.sh",
@@ -53,6 +54,27 @@ services:
       - database_application
     depends_on:
       - database_application
+    env_file: .env
+    environment:
+      - DB_HOST=${DB_HOST}
+  
+  seed:
+    build:
+      context: .
+    restart: on-failure
+    command:
+      [
+        "./wait-for-it/wait-for-it.sh",
+        "database_application:5432",
+        "--",
+        "npm",
+        "run",
+        "seed:run"
+      ]
+    links:
+      - migration
+    depends_on:
+      - migration
     env_file: .env
     environment:
       - DB_HOST=${DB_HOST}

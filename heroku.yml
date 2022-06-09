@@ -8,6 +8,7 @@ build:
 release:
   command: 
     - npm run migrate
+    - npm run seed:run
   image: web
 run:
   web: npm run start:prod
