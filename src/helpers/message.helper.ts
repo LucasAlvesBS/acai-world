@@ -6,4 +6,5 @@ export const MessageHelper = {
   UNIDENTIFIED_USER: 'Usuário não identificado',
   NOT_FOUND: 'Página não encontrada',
   CONFLICT: 'Email indisponível',
+  FORBBIDEN: 'Você não tem privilégios suficientes',
 };
