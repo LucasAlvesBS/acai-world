@@ -7,8 +7,7 @@ build:
     web: Dockerfile
 release:
   command: 
-    - npm run migrate
-    - npm run seed:run
+    - ./on_release.sh
   image: web
 run:
   web: npm run start:prod
