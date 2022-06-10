@@ -1,5 +1,5 @@
 import { SetMetadata } from '@nestjs/common';
-import { UsersEntity } from 'src/app/users/users.entity';
+import { UsersEntity } from '../app/users/users.entity';
 import { Action, Subjects } from './ability.factory';
 
 export interface RequiredRule {

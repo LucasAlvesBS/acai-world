@@ -6,8 +6,8 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { MessageHelper } from 'src/helpers/message.helper';
-import { RegExHelper } from 'src/helpers/regex.helper';
+import { MessageHelper } from '../../../helpers/message.helper';
+import { RegExHelper } from '../../../helpers/regex.helper';
 
 export class CreateUserDto {
   @IsNotEmpty()

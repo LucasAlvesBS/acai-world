@@ -6,8 +6,8 @@ import {
   InferSubjects,
 } from '@casl/ability';
 import { Injectable } from '@nestjs/common';
-import { UsersEntity } from 'src/app/users/users.entity';
-import { MessageHelper } from 'src/helpers/message.helper';
+import { UsersEntity } from '../app/users/users.entity';
+import { MessageHelper } from '../helpers/message.helper';
 
 export enum Action {
   Manage = 'manage',
