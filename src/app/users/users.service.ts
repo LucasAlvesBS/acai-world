@@ -30,12 +30,12 @@ export class UsersService {
       .getMany();
   }
 
-  async getProfile(conditions: FindConditions<UsersEntity>) {
+  async getProfile(req: string) {
     try {
-      await this.userRepository.findOneOrFail(conditions);
+      await this.userRepository.findOneOrFail(req);
       return await createQueryBuilder(UsersEntity, 'users')
         .select(['users.id', 'users.fullName'])
-        .where(conditions)
+        .where(req)
         .getOne();
     } catch (error) {
       throw new NotFoundException(MessageHelper.NOT_FOUND);
@@ -76,13 +76,10 @@ export class UsersService {
     return savedAdmin;
   }
 
-  async updateUser(
-    conditions: FindConditions<UsersEntity>,
-    data: UpdateUserDto,
-  ) {
+  async updateUser(req: string, data: UpdateUserDto) {
     const user = await createQueryBuilder(UsersEntity, 'users')
       .select(['users.id', 'users.password'])
-      .where(conditions)
+      .where(req)
       .getOne();
     checkIfExists(user);
     const { email } = data;
@@ -96,10 +93,10 @@ export class UsersService {
     await this.userRepository.save(user);
   }
 
-  async deleteUser(conditions: FindConditions<UsersEntity>) {
+  async deleteUser(req: string) {
     try {
-      await this.userRepository.findOneOrFail(conditions);
-      this.userRepository.delete(conditions);
+      await this.userRepository.findOneOrFail(req);
+      this.userRepository.delete(req);
     } catch (error) {
       throw new NotFoundException(MessageHelper.NOT_FOUND);
     }
