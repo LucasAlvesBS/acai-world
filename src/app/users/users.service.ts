@@ -55,8 +55,8 @@ export class UsersService {
 
   async createUser(data: CreateUserDto) {
     const { email } = data;
-    const verifyUser = await this.userRepository.findOne({ email });
-    checkDuplicate(verifyUser);
+    const userExists = await this.userRepository.findOne({ email });
+    checkDuplicate(userExists);
     const user = this.userRepository.create(data);
     user.password = hashSync(user.password, 10);
     const savedUser = await this.userRepository.save(user);
@@ -66,8 +66,8 @@ export class UsersService {
 
   async createAdmin(data: CreateUserDto) {
     const { email } = data;
-    const verifyAdmin = await this.userRepository.findOne({ email });
-    checkDuplicate(verifyAdmin);
+    const adminExists = await this.userRepository.findOne({ email });
+    checkDuplicate(adminExists);
     const admin = this.userRepository.create(data);
     admin.password = hashSync(admin.password, 10);
     admin.isAdmin = true;
@@ -94,11 +94,10 @@ export class UsersService {
   }
 
   async deleteUser(req: string) {
-    try {
-      await this.userRepository.findOneOrFail(req);
-      this.userRepository.delete(req);
-    } catch (error) {
+    const user = await this.userRepository.findOne(req);
+    if (!user) {
       throw new NotFoundException(MessageHelper.NOT_FOUND);
     }
+    this.userRepository.delete(req);
   }
 }
